@@ -1,0 +1,79 @@
+{
+  "column": [
+    {
+      "class": "room",
+      "object": {
+        "descriptions": {
+          "EAST": "Cobblestones lead onto a platform illuminated by, is that sunlight?!!",
+          "NORTH": "This is the way you have came from, a line of chalk snakes backward deeper into the temple.",
+          "WEST": "A stone wall fifty feet tall with vines growing on it stands before you.",
+          "SOUTH": "A stone floor extends beneath you, going under a stone arch"
+        },
+        "numRoom": 0
+      }
+    },
+    {
+      "class": "room",
+      "object": {
+        "descriptions": {
+          "EAST": "You see a dimly lit cavern in front of you.",
+          "NORTH": "In this direction you see a stone arch with a small white marking of chalk",
+          "WEST": "An ivy covered wall stands before you.",
+          "SOUTH": "A glowing light beckons you down the tunnel."
+        },
+        "numRoom": 1
+      }
+    },
+    {
+      "class": "room",
+      "object": {
+        "descriptions": {
+          "EAST": "Stairs lead down into complete darkness",
+          "NORTH": "More cobblestones lead off into the distance",
+          "WEST": "There is still an ivy covered wall standing before you.",
+          "SOUTH": "Two behemoth statues block the passage."
+        },
+        "numRoom": 2
+      }
+    }
+  ],
+
+  "column": [
+    {
+      "class": "room",
+      "object": {
+        "descriptions": {
+          "EAST": "The floor you stand on starts to shake. Then it falls beneath you into a deep pit.",
+          "NORTH": "The floor you stand on starts to shake. Then it falls beneath you into a deep pit.",
+          "WEST": "The floor you stand on starts to shake. Then it falls beneath you into a deep pit.",
+          "SOUTH": "The floor you stand on starts to shake. Then it falls beneath you into a deep pit."
+        },
+        "numRoom": 3
+      }
+    },
+    {
+      "class": "room",
+      "object": {
+        "descriptions": {
+          "EAST": "You see the edge of the room.",
+          "NORTH": "Cobblestones lead onto a platform illuminated by, is that sunlight?!!",
+          "WEST": "More cobblestones lead off into the distance.",
+          "SOUTH": "Stairs lead down into complete darkness."
+        },
+        "numRoom": 4
+      }
+    },
+    {
+      "class": "room",
+      "object": {
+        "descriptions": {
+          "EAST": "In the darkness with your hands out in front of you, your fingers grasp what must be a keyhole!",
+          "NORTH": "As you fumble around in the dark, your knee bumps what must be a stair leading up.",
+          "WEST": "As you fumble around in the dark, your knee bumps what must be a stair leading up.",
+          "SOUTH": "You stumble into a wall at the end of the cave."
+        },
+        "numRoom": 5
+      }
+    }
+  ]
+}
