@@ -1,0 +1,33 @@
+{
+  "column": [
+    {
+      "class": "room",
+      "object": {
+        "descriptions": {
+          "EAST": "East",
+          "NORTH": "North",
+          "WEST": "oo",
+          "SOUTH": "South"
+        }
+      }
+    },
+    {
+      "class": "room",
+      "object": {
+        "descriptions": {
+          "EAST": "ok",
+          "NORTH": "Well then",
+          "WEST": "alright",
+          "SOUTH": "oo"
+      }
+      }
+    },
+    {
+      "class": "door",
+      "object": {
+        "open": "false",
+        "descriptions": "This is a door"
+      }
+    }
+  ]
+}
