@@ -8,16 +8,18 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class TriviaRoom extends Room {
 
     private HashMap<String, String> trivia = new HashMap<>();
     private boolean askingTrivia = true;
-    private ReadInput<MapSite> firstQuestions = new ReadInput<>();
+    private ReadInput<MapSite> playerCommands;
 
     public TriviaRoom() {
         super(new String[]{"This is a TriviaRoom North", "This is a TriviaRoom East", "This is a TriviaRoom South", "This is a TriviaRoom West"});
-        setAddCommandsOnEnter(true);
+        setAddCommandsOnEnter(false);
+        ReadInput<MapSite> firstQuestions = new ReadInput<>();
         firstQuestions.putCommand("yes", mapSite -> {
             TriviaRoom triviaRoom = (TriviaRoom) mapSite;
             triviaRoom.setAskingTrivia(true);
@@ -27,6 +29,8 @@ public class TriviaRoom extends Room {
             triviaRoom.setAskingTrivia(false);
             System.out.println(triviaRoom.getDescription(triviaRoom.getPlayer().getDirection()));
         });
+        //firstQuestions.putCommand("help", mapSite -> System.out.println("Commands: " + mapSite.getCurrentCommands().getCommands().keySet().stream().filter(key -> !key.equals("help")).collect(Collectors.joining(", "))) );
+        getDefaultCommands().putAllCommands(firstQuestions);
 
         trivia.put("\"Don't ever tell anybody anything. If you do, you start missing everybody.\" This is a quote from which book: \"Great Expectations\"(A) \"Animal Farm\" (B) \"1984\"(C) \"The Catcher in the Rye\"(D)\n", "d");
         trivia.put("Which Greek god is the goddess of corn, grain and harvest? Demeter(A) Dionysus(B) Poseidon(C) Pan(D)\n", "a");
@@ -41,39 +45,57 @@ public class TriviaRoom extends Room {
             String triviaQ = entry.getValue();
             ReadInput<MapSite> question = triviaQuestion(triviaQ, choices);
             question.setPrompt(entry.getKey());
+            question.setDefaultCommand(mapSite -> System.out.println("Choose 'a', 'b', 'c', or 'd'"));
             setCurrentCommands(question);
             runCommands();
+            while (getCurrentCommands().getLastRanCommand() == getCurrentCommands().getDefaultCommand()) {
+                runCommands();
+            }
             if (!askingTrivia) {
                 break;
             }
         }
         if (askingTrivia) {
             System.out.println("The cat hands you a key, this might be useful later.");
+            setAskingTrivia(false);
         }
     }
 
     private  ReadInput<MapSite> triviaQuestion(String answer, List<String> choices) {
         ReadInput<MapSite> triviaQuestion = new ReadInput<>();
+        Consumer<MapSite> failureCommand = mapSite -> {
+            System.out.println("You failed, good luck next time.");
+            TriviaRoom triviaRoom = (TriviaRoom) mapSite;
+            triviaRoom.setAskingTrivia(false);
+        };
         for (String choice : choices) {
-            triviaQuestion.putCommand(choice, mapSite -> {
-                System.out.println("You failed, good luck next time.");
-                TriviaRoom triviaRoom = (TriviaRoom) mapSite;
-                triviaRoom.setAskingTrivia(false);
-            });
+            triviaQuestion.putCommand(choice, failureCommand);
         }
+        triviaQuestion.setDefaultCommand(failureCommand);
         triviaQuestion.putCommand(answer, mapSite -> System.out.println("You got it right!"));
         return triviaQuestion;
     }
 
-
+    /**
+     * Interrupts askTrivia() if set to false otherwise calls askTrivia()
+     * @param askingTrivia boolean
+     */
     public void setAskingTrivia(boolean askingTrivia) {
+        this.askingTrivia = askingTrivia;
         if (askingTrivia) {
             askTrivia();
         }
         else {
-            setCurrentCommands(getDefaultCommands());
+            setCurrentCommands(playerCommands);
         }
-        this.askingTrivia = askingTrivia;
+    }
+
+    /**
+     * Trivia is defined as a HashMap where the first String is the question and the second String is the answer
+     * @param trivia HashMap<Question, Answer>
+     */
+    public void setTrivia(HashMap<String, String> trivia) {
+        this.trivia = trivia;
     }
 
     /**
@@ -87,8 +109,7 @@ public class TriviaRoom extends Room {
     @Override
     public boolean enter(Player player, ReadInput<MapSite> playerCommands) {
         super.enter(player, playerCommands);
-        setCurrentCommands(firstQuestions);
-        setDefaultCommands(playerCommands);
+        this.playerCommands = playerCommands;
         return true;
     }
 
