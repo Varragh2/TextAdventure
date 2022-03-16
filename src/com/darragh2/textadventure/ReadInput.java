@@ -14,6 +14,7 @@ public class ReadInput <T> implements Cloneable {
     private Scanner output;
     private Consumer<T> defaultCommand = s -> System.out.println("Unknown command, type 'help' for a list of commands");
     private String prompt = "Enter command: ";
+    private Consumer<T> lastRanCommand;
 
 
     public ReadInput() {this(new HashMap<>());}
@@ -70,9 +71,7 @@ public class ReadInput <T> implements Cloneable {
 
     public void andThen (Consumer<T> method) {
         //adds a method to do after any command is run
-        commands.forEach( (string, command) -> {
-            commands.put(string, command.andThen(method));
-        });
+        commands.forEach( (string, command) -> commands.put(string, command.andThen(method)));
     }
     public void andThen (Consumer<T> method, ArrayList<String> exceptions) {
         //adds a method to do after any command has run
@@ -92,7 +91,8 @@ public class ReadInput <T> implements Cloneable {
     public void runCommands(T T) {
         System.out.print(prompt);
         String input = scanner.nextLine().toLowerCase().trim();
-        commands.getOrDefault(input, defaultCommand).accept(T);
+        lastRanCommand = commands.getOrDefault(input, defaultCommand);
+        lastRanCommand.accept(T);
     }
 
     public void runCommands(T T, ArrayList<String> exceptions) {
@@ -104,7 +104,15 @@ public class ReadInput <T> implements Cloneable {
                 newCommands.put(str, commands.get(str));
             }
         }
-        newCommands.getOrDefault(input, defaultCommand).accept(T);
+        lastRanCommand = newCommands.getOrDefault(input, defaultCommand);
+        lastRanCommand.accept(T);
+    }
+
+    /**
+     * @return the last command ran as specified in runCommands()
+     */
+    public Consumer<T> getLastRanCommand() {
+        return lastRanCommand;
     }
 
     public Consumer<T> getDefaultCommand() {
@@ -117,7 +125,6 @@ public class ReadInput <T> implements Cloneable {
      * @param defaultCommand the new defaultCommand
      */
     public void setDefaultCommand(Consumer<T> defaultCommand) {
-        commands.put("default", defaultCommand);
         this.defaultCommand = defaultCommand;
     }
 

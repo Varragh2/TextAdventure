@@ -20,10 +20,12 @@ public class JsonPrototypeFactoryTester {
 
     public static void main(String[] args) throws IOException {
 
-        JsonPrototypeFactory prototypeFactory = new JsonPrototypeFactory(new FileReader(maze_json));
+        JsonPrototypeFactory prototypeFactory = new JsonPrototypeFactory(new FileReader(map_json));
 
         prototypeFactory.register("room", Room.class);
         prototypeFactory.register("door", Door.class);
+        prototypeFactory.register("stoppedRoom", StoppedRoom.class);
+        prototypeFactory.register("triviaRoom", TriviaRoom.class);
         Maze maze1 = prototypeFactory.read();
 
         Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new ExclusionStrategy() {
@@ -50,7 +52,7 @@ public class JsonPrototypeFactoryTester {
         defaultCommands.putCommand("turn right", mapSite -> mapSite.getPlayer().turnRight());
         defaultCommands.putCommand("turn around", mapSite -> mapSite.getPlayer().turnAround());
         defaultCommands.putCommand("direction", mapSite -> System.out.println("You are facing " + mapSite.getPlayer().getDirection()));
-        defaultCommands.putCommand("help", s -> System.out.println("Commands: " + String.join(", ", s.getCurrentCommands().getCommands().keySet().stream().filter( key -> !key.equals("help") ).collect(Collectors.toSet()))));
+        defaultCommands.putCommand("help", mapSite -> System.out.println("Commands: " + String.join(", ", mapSite.getCurrentCommands().getCommands().keySet().stream().filter( key -> !key.equals("help") ).collect(Collectors.toSet()))));
 
 
         ReadInput<MapSite> readInputRoom1 = new ReadInput<>();
@@ -84,16 +86,5 @@ public class JsonPrototypeFactoryTester {
             player.runCommands();
         }
 
-
-        /**
-        Player player = new Player(maze.getDefaultMapSite());
-        player.enter();
-        while (player.alive()) {
-            ReadInput readInput = maze.getCommands();
-            //should be the super ReadInput
-            readInput.runCommands();
-         }
-
-         **/
     }
 }

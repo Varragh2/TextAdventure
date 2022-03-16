@@ -29,5 +29,18 @@
         "descriptions": "This is a door"
       }
     }
+  ],
+  "column": [
+    {
+      "class": "triviaRoom",
+      "object": {
+        "descriptions": {
+          "NORTH": "TriviaRoomNorth",
+          "EAST": "TriviaRoomEast",
+          "WEST": "TriviaRoomWest",
+          "SOUTH": "TriviaRoomSouth"
+        }
+      }
+    }
   ]
 }
