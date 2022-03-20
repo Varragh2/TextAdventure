@@ -20,4 +20,4 @@ so that you can read it in from file:
 
 The other main problem that this library solves is user input. Each MapSite implementation is passed a reference to Player and the Player's ReadInput when Player moves 
 into the MapSite. 
-MapSite.setDefaultCommands(), MapSite.setAddCommandsOnEnter(), and MapSite.setCurrentCommands() can be used to customize the ReadInput that is used on MapSite.runComands().
+`MapSite.setDefaultCommands()`, `MapSite.setAddCommandsOnEnter()`, and `MapSite.setCurrentCommands()` can be used to customize the ReadInput that is used on `MapSite.runComands()`.
